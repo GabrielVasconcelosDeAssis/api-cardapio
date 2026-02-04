@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Produto {
+  ISN_PRODUTO       Int      @id @default(autoincrement())
+  PN_NOME     String
+  PT_TIPO     String
+  PP_PRECO    Float
+  PD_DESCRICAO String?  // opcional
+  PDC_DATA_CRIACAO DateTime @default(now())
+}
+
+model Usuario {
+  ISN_USUARIO     Int      @id @default(autoincrement())
+  US_USERNAME     String   @unique
+  UE_EMAIL        String   @unique
+  UP_PASSWORD     String
+  UTA_TIPOADM      Boolean  @default(false)
+  UDC_DATA_CRIACAO DateTime @default(now())
+}
+
+model Compra {
+  ISN_COMPRA      Int       @id @default(autoincrement())
+  CUI_USUARIO_ID      Int
+  CPI_PRODUTO_ID      Int
+  CQ_QUANTIDADE      Int       @default(1)
+  CDC_DATA_COMPRA     DateTime  @default(now())
+
+  usuario Usuario  @relation(fields: [CUI_USUARIO_ID], references: [ISN_USUARIO])
+  produto Produto  @relation(fields: [CPI_PRODUTO_ID ], references: [ISN_PRODUTO])
+}
