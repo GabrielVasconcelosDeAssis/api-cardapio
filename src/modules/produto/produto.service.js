@@ -1,38 +1,32 @@
+import { PrismaClient } from "@prisma/client";
+const db = new PrismaClient();
 
 export const getAllProdutos = async () => {
-    const produtos = await db.produto.findMany();
-    return produtos;
+  return await db.produto.findMany();
 };
 
 export const getProdutoById = async (id) => {
-    const produto = await db.produto.findUnique({
-        where: { id: Number(id) }
-    });
-
-    return produto;
+  return await db.produto.findUnique({
+    where: { ISN_PRODUTO: Number(id) }
+  });
 };
 
 export const createProduto = async (novoProduto) => {
-    const produtoCriado = await db.produto.create({
-        data: novoProduto
-    });
-
-    return produtoCriado;
+  return await db.produto.create({
+    data: novoProduto
+  });
 };
 
 export const updateProduto = async (id, novosDadosProduto) => {
-    const produtoAtualizado = await db.produto.update({
-        where: { id: Number(id) },
-        data: novosDadosProduto
-    });
-
-    return produtoAtualizado;
+  return await db.produto.update({
+    where: { ISN_PRODUTO: Number(id) },
+    data: novosDadosProduto
+  });
 };
 
 export const deleteProduto = async (id) => {
-    await db.produto.delete({
-        where: { id: Number(id) }
-    });
-
-    return true;
+  await db.produto.delete({
+    where: { ISN_PRODUTO: Number(id) }
+  });
+  return true;
 };
